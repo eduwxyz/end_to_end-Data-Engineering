@@ -8,6 +8,7 @@ packages = [{include = "end_to_end_data_engineering"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+dbt-bigquery = "^1.4.1"
 
 
 [build-system]
