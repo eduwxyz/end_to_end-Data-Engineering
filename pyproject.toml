@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "end-to-end-data-engineering"
+version = "0.1.0"
+description = ""
+authors = ["eduardo machado <eduardoshy1@gmail.com>"]
+readme = "README.md"
+packages = [{include = "end_to_end_data_engineering"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
