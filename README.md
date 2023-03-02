@@ -12,11 +12,10 @@ A motivação para construir esse projeto, é para fornecer uma boa oportunidade
 
 Em construção...
 
-# Output
-
-Em construção
-
 # Etapas para construção
 
 1. [Poetry](instrucoes/poetry.md)
 2. [Terraform](instrucoes/terraform.md)
+3. [Airflow](instrucoes/docker_airflow.md)
+4. [dags](instrucoes/dags.md)
+5. [dbt](instrucoes/dbt.md)

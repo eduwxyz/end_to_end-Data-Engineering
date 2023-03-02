@@ -93,11 +93,6 @@ Agora que já temos a task que faz o upload do arquivo para o GCS, vamos criar a
         skip_leading_rows=1, # Quantas linhas serão ignoradas
         write_disposition="WRITE_TRUNCATE", # Se quer sobrescrever os dados
         allow_quoted_newlines=True, # Se quer permitir quebra de linha
-        schema_fields=[
-            {"name": "VendorID", "type": "INTEGER", "mode": "NULLABLE"},
-            {"name": "tpep_pickup_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-            {"name": "tpep_dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-        ],
     )
 
 ```
