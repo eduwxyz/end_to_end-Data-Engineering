@@ -346,7 +346,3 @@ Após clicar em “Create”, você deve selecionar a conexão do tipo “Google
 Agora que você adicionou a conexão, você pode testar se ela está funcionando. Para isso, clique em “Test Connection”.
 
 Dando o sinal verde, o seu airflow já está pronto para ser utilizado.
-
-```
-
-```

@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from textwrap import dedent
 import os
 from airflow.contrib.operators.file_to_gcs import FileToGoogleCloudStorageOperator
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import (
@@ -8,11 +7,15 @@ from airflow.providers.google.cloud.transfers.gcs_to_bigquery import (
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
-url_sufix = "/yellow_tripdata_2022-{{ execution_date.strftime('%m') }}.parquet"
-url_prefix = "https://d37ci6vzurychx.cloudfront.net/trip-data"
-path_to_local_home = os.environ.get("AIRFLOW_HOME", "/opt/airflow")
 
-url = url_prefix + url_sufix
+PATH_TO_LOCAL_HOME = os.environ.get("AIRFLOW_HOME", "/opt/airflow")
+
+URL_SUFIX_YELLOW = "/yellow_tripdata_2022-{{ execution_date.strftime('%m') }}.parquet"
+URL_SUFIX_GREEN = "/green_tripdata_2022-{{ execution_date.strftime('%m') }}.parquet"
+URL_PREFIX = "https://d37ci6vzurychx.cloudfront.net/trip-data"
+
+URL_YELLOW = URL_PREFIX + URL_SUFIX_YELLOW
+URL_GREEN = URL_PREFIX + URL_SUFIX_GREEN
 
 with DAG(
     "ingest",
@@ -34,23 +37,35 @@ with DAG(
 ) as dag:
 
     t1 = BashOperator(
-        task_id="wget",
-        bash_command=f"curl -sSl {url} > {path_to_local_home}/output.parquet",
+        task_id="wget_yellow_tripdata",
+        bash_command=f"curl -sSl {URL_YELLOW} > {PATH_TO_LOCAL_HOME}/output-yellow.parquet",
+    )
+    
+    t2 = BashOperator(
+        task_id="wget_green_tripdata",
+        bash_command=f"curl -sSl {URL_GREEN} > {PATH_TO_LOCAL_HOME}/output-green.parquet",
     )
 
-    t2 = FileToGoogleCloudStorageOperator(
-        task_id="LocalToGCS1",
-        src=f"{path_to_local_home}/output.parquet",
-        dst="data/dataset_tempe.parquet",
+    t3 = FileToGoogleCloudStorageOperator(
+        task_id="LocalToGCS-yellow",
+        src=f"{PATH_TO_LOCAL_HOME}/output-yellow.parquet",
+        dst="data/raw_data_yellow.parquet",
+        bucket="dtc_data_lake_allspark-377318",
+    )
+    
+    t4 = FileToGoogleCloudStorageOperator(
+        task_id="LocalToGCS-green",
+        src=f"{PATH_TO_LOCAL_HOME}/output-green.parquet",
+        dst="data/raw_data_green.parquet",
         bucket="dtc_data_lake_allspark-377318",
     )
 
 
-    t3 = GCSToBigQueryOperator(
-        task_id="GCS_to_BigQuery",
+    t5 = GCSToBigQueryOperator(
+        task_id="GCS_to_BigQuery-yellow",
         bucket="dtc_data_lake_allspark-377318",
-        source_objects=["data/dataset_tempe.parquet"],
-        destination_project_dataset_table="allspark-377318:raw_data.trip_data",
+        source_objects=["data/raw_data_yellow.parquet"],
+        destination_project_dataset_table="allspark-377318:raw_data.trips_yellow",
         write_disposition="WRITE_TRUNCATE",
         source_format="PARQUET",
         allow_quoted_newlines=True,
@@ -61,5 +76,23 @@ with DAG(
             {"name": "tpep_dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
         ],
     )
+    
+    
+    t6 = GCSToBigQueryOperator(
+        task_id="GCS_to_BigQuery-green",
+        bucket="dtc_data_lake_allspark-377318",
+        source_objects=["data/raw_data_green.parquet"],
+        destination_project_dataset_table="allspark-377318:raw_data.trips_green",
+        write_disposition="WRITE_TRUNCATE",
+        source_format="PARQUET",
+        allow_quoted_newlines=True,
+        skip_leading_rows=1,
+        schema_fields=[
+            {"name": "VendorID", "type": "INTEGER", "mode": "NULLABLE"},
+            {"name": "tpep_pickup_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
+            {"name": "tpep_dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
+        ],
+    )
+    
 
-    t1 >> t2 >> t3
+    t1 >> t2 >> [t3, t4] >> t5 >> t6
