@@ -322,3 +322,19 @@ docker-compose up
 Agora que você conseguiu executar o airflow, podemos ver sua interface web. Para isso, basta acessar o endereço http://localhost:8080. Você deverá ver a seguinte tela:
 
 ![Alt Text](/imagens/airflow.png)
+
+### Adicionando conexão ao airflow
+
+Nesse projeto vamos utilizar o airflow para orchestrar comandos diretos a cloud do Google. Para isso, precisamos adicionar uma conexão com o Google Cloud. Para isso, vamos acessar o endereço http://localhost:8080/admin/connection/ e clicar em “Create”.
+
+Nesse momento você já deve ter criado uma conta de serviço no Google Cloud. Se não, crie uma agora. Após criar a conta de serviço, você deve ter um arquivo json com as credenciais. Vamos utilizar esse arquivo para adicionar a conexão.
+
+Após clicar em “Create”, você deve selecionar a conexão do tipo “Google Cloud”. Em seguida, você deve preencher os campos:
+
+- Nome da conexão: google_cloud_default
+- Project ID: id do projeto no Google Cloud
+- Keyfile JSON: conteúdo do arquivo json com as credenciais
+
+Agora que você adicionou a conexão, você pode testar se ela está funcionando. Para isso, clique em “Test Connection”.
+
+Dando o sinal verde, o seu airflow já está pronto para ser utilizado.
