@@ -313,7 +313,12 @@ volumes:
 Com o arquivo docker-compose.yml criado, podemos iniciar o Airflow com o seguinte comando:
 
 ```
-#primeiro
 docker-compose up airflow-init
 docker-compose up
 ```
+
+### Visualizando o Airflow
+
+Agora que você conseguiu executar o airflow, podemos ver sua interface web. Para isso, basta acessar o endereço http://localhost:8080. Você deverá ver a seguinte tela:
+
+![Alt Text](imagens/airflow.png)
