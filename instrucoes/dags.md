@@ -120,6 +120,8 @@ Para isso:
 
 E depois de alguns segundos você conseguirá ver se sua dag foi executada com sucesso. Se você seguiu todo esse tutorial passo a passo, você já deve ter um dataset no bigquery com os dados do site. Abaixo estarão as imagens de como ficou o resultado final.
 
+![airflow-execution](/imagens/airflow-exec.png)
+
 Como deveria ficar o gcs:
 
 ![gcs](/imagens/gcs.png)
