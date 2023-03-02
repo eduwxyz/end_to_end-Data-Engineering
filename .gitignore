@@ -5,3 +5,4 @@ terraform/.terraform.lock.hcl
 terraform/terraform.tfstate
 airflow/logs
 airflow/plugins
+logs

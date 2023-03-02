@@ -3,11 +3,11 @@ variable "project" {}
 variable "credentials_file" {}
 
 variable "region" {
-  default = "us-central1"
+  default = "US"
 }
 
 variable "zone" {
-  default = "us-central1-c"
+  default = "US"
 }
 
 
