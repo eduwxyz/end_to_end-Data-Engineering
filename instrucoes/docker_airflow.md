@@ -321,4 +321,4 @@ docker-compose up
 
 Agora que você conseguiu executar o airflow, podemos ver sua interface web. Para isso, basta acessar o endereço http://localhost:8080. Você deverá ver a seguinte tela:
 
-![Alt Text](/home/eduarodomachado/Documentos/end_to_end-Data-Engineering/imagens/airflow.png)
+![Alt Text](/imagens/airflow.png)
