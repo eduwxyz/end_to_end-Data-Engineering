@@ -70,11 +70,6 @@ with DAG(
         source_format="PARQUET",
         allow_quoted_newlines=True,
         skip_leading_rows=1,
-        schema_fields=[
-            {"name": "VendorID", "type": "INTEGER", "mode": "NULLABLE"},
-            {"name": "tpep_pickup_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-            {"name": "tpep_dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-        ],
     )
     
     
@@ -87,11 +82,6 @@ with DAG(
         source_format="PARQUET",
         allow_quoted_newlines=True,
         skip_leading_rows=1,
-        schema_fields=[
-            {"name": "VendorID", "type": "INTEGER", "mode": "NULLABLE"},
-            {"name": "tpep_pickup_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-            {"name": "tpep_dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-        ],
     )
     
 
