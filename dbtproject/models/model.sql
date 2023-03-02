@@ -1,1 +1,0 @@
-select * from raw_data.trip_data
