@@ -310,11 +310,19 @@ volumes:
   postgres-db-volume:
 ```
 
-Com o arquivo docker-compose.yml criado, podemos iniciar o Airflow com o seguinte comando:
+Após a criação do arquivo docker-compose.yml, precisamos também passar algumas variáveis de ambiente para o airflow. Para isso, vamos criar um arquivo chamado .env com as seguintes variáveis:
+
+```
+AIRFLOW_UID=1000
+AIRFLOW_GID=0
+```
+
+Agora que já criamos o docker-compose.yml e o .env, vamos executar o airflow. Para isso, vamos executar os seguintes comandos:
 
 ```
 docker-compose up airflow-init
 docker-compose up
+
 ```
 
 ### Visualizando o Airflow
@@ -338,3 +346,7 @@ Após clicar em “Create”, você deve selecionar a conexão do tipo “Google
 Agora que você adicionou a conexão, você pode testar se ela está funcionando. Para isso, clique em “Test Connection”.
 
 Dando o sinal verde, o seu airflow já está pronto para ser utilizado.
+
+```
+
+```
