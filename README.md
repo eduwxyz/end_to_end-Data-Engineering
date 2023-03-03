@@ -12,7 +12,7 @@ A motivação para construir esse projeto, é para fornecer uma boa oportunidade
 
 # Arquitetura
 
-Em construção...
+![Arquitetura](Imagens/arquitetura.png)
 
 # Etapas para construção
 
@@ -22,3 +22,5 @@ Em construção...
 4. [Airflow](instrucoes/docker_airflow.md)
 5. [dags](instrucoes/dags.md)
 6. [dbt](instrucoes/dbt.md)
+7. [Excluindo recursos](instrucoes/destroy.md)
+8. [Conclusão](instrucoes/conclusao.md)
