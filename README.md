@@ -12,7 +12,7 @@ A motivação para construir esse projeto, é para fornecer uma boa oportunidade
 
 # Arquitetura
 
-![Arquitetura](Imagens/arquitetura.png)
+![Arquitetura](imagens/arquitetura.png)
 
 # Etapas para construção
 
