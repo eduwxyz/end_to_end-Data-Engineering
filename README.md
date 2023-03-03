@@ -1,8 +1,10 @@
 # end_to_end-Data-Engineering
 
-Este repositório tem como objetivo apresentar um exemplo de um pipeline de dados, de ponta a ponta, utilizando as ferramentas mais atuais do mercado.
+Este repositório tem como objetivo apresentar um exemplo de um pipeline de dados, utilizando as ferramentas mais atuais do mercado.
 
 Com esse projeto end-to-end, você terá acesso a uma ampla gama de ferramentas que estão em extrema alta em vagas para engenheiros de dados. Então, se você está procurando um projeto para iniciar ou aumentar seu portifólio e aprender ferramentas novas, este repositório é o lugar certo para começar.
+
+Não iremos nos aprofundar em nenhuma ferramenta específica aqui, mas sim dar overview de como elas funcionam e se integram entre si.
 
 # Motivação
 
@@ -15,7 +17,8 @@ Em construção...
 # Etapas para construção
 
 1. [Poetry](instrucoes/poetry.md)
-2. [Terraform](instrucoes/terraform.md)
-3. [Airflow](instrucoes/docker_airflow.md)
-4. [dags](instrucoes/dags.md)
-5. [dbt](instrucoes/dbt.md)
+2. [Google Cloud](instrucoes/google-cloud.md)
+3. [Terraform](instrucoes/terraform.md)
+4. [Airflow](instrucoes/docker_airflow.md)
+5. [dags](instrucoes/dags.md)
+6. [dbt](instrucoes/dbt.md)

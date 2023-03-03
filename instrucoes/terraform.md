@@ -148,7 +148,7 @@ E é isso que precisamos de configuração do terraform neste projeto, se tudo o
 
 Imagem do bucket no gcs
 
-![bucket](imagens/gcs-print.png)
+![bucket](/imagens/gcs-print.png)
 
 Imagem do dataset no bigquery
-![raw_data](imagens/bigquery.png)
+![raw_data](/imagens/bigquery.png)
