@@ -20,11 +20,11 @@ Dentro do projeto que criamos na etapa anterior utilizando o poetry, vamos criar
 
 `touch tf`
 
-Como nós iremos transferir nossos dados direto para o bigquery, só precisamos de um `resource`, que é o que o terraform irá criar. No nosso caso, iremos criar um `resource` do tipo `google_bigquery_dataset`.
+Como nós iremos transferir nossos para o gcs e posteriormente para o bigquery, precisamos de 2 `resources`, que é o que o terraform irá criar. No nosso caso, iremos criar um `resource` do tipo `google_storage_bucket` e outro do tipo `google_bigquery_dataset`.
 
 Dentro do arquivo `main.tf` vamos adicionar o seguinte código:
 
-```
+```hcl
 terraform {
   required_providers {
     google = {
@@ -41,14 +41,40 @@ provider "google" {
   zone    = var.zone
 }
 
+
+resource "google_storage_bucket" "data-lake-bucket" {
+  name     = "${local.data_lake_bucket}_${var.project}" # Concatenating DL bucket & Project name for unique naming
+  location = var.region
+
+  # Optional, but recommended settings:
+  storage_class               = var.storage_class
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = 30 // days
+    }
+  }
+
+  force_destroy = true
+}
+
 resource "google_bigquery_dataset" "dataset" {
   dataset_id = var.BQ_DATASET
   project    = var.project
   location   = var.region
 }
+
 ```
 
-Para entender mais a fundo sobre o que cada trecho desse código faz, acesse a [documentação](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-build) do terraform.
+Para entender mais a fundo sobre o que cada trecho desse código faz, acesse a [documentação](https://developer.hashicorp.com/terraform/tutorials/gcp-get-started) do terraform.
 
 # Variáveis
 
@@ -64,24 +90,37 @@ variable "project" {}
 variable "credentials_file" {}
 
 variable "region" {
-  default = "us-central1"
+  default = "US"
 }
 
 variable "zone" {
-  default = "us-central1-c"
+  default = "US"
 }
+
+
+variable "storage_class" {
+  description = "Storage class type for your bucket. Check official docs for more info."
+  default     = "STANDARD"
+}
+
 
 
 variable "BQ_DATASET" {
   description = "BigQuery Dataset that raw data (from GCS) will be written to"
   type        = string
-  default     = "raw_data"
+  default     = "raw_data" #nome do nosso dataset
 }
+
+
+locals {
+  data_lake_bucket = "dtc_data_lake" #nome do nosso bucket
+}
+
 ```
 
 # Terraform init
 
-Para que o terraform possa criar o nosso dataset, precisamos inicializar o terraform. Para isso, vamos rodar o comando `terraform init` na raiz do nosso projeto.
+Para que o terraform possa criar o nosso dataset e nosso bucket, precisamos inicializar o terraform. Para isso, vamos rodar o comando `terraform init` na raiz do nosso projeto.
 
 ```
 terraform init
@@ -89,7 +128,7 @@ terraform init
 
 # Terraform plan
 
-Para que o terraform possa criar o nosso dataset, precisamos criar um plano de execução. Para isso, vamos rodar o comando `terraform plan`, passando o argumento -var="project=<project-id>" para que o terraform saiba qual projeto ele deve criar o dataset.
+Agora vamos criar um plano de execução. Para isso, vamos rodar o comando `terraform plan`, passando o argumento -var="project=<project-id>" para que o terraform saiba qual projeto ele deve criar o dataset e o bucket.
 
 ```
 terraform plan -var="project=allspark-377318"
@@ -97,7 +136,7 @@ terraform plan -var="project=allspark-377318"
 
 # Terraform apply
 
-Para que o terraform possa criar o nosso dataset, precisamos aplicar o plano de execução. Para isso, vamos rodar o comando `terraform apply`, passando o argumento -var="project=<project-id>" para que o terraform saiba qual projeto ele deve criar o dataset.
+Agora vamos aplicar o plano de execução. Para isso, vamos rodar o comando `terraform apply`, passando o argumento -var="project=<project-id>".
 
 ```
 terraform apply -var="project=<project-id>"
@@ -105,8 +144,11 @@ terraform apply -var="project=<project-id>"
 
 # Configuração do terraform concluida
 
-E é isso que precisamos de configuração do terraform neste projeto, se tudo ocorreu bem, no seu ambiente do bigquery você deve ver um dataset chamado `raw_data`.
+E é isso que precisamos de configuração do terraform neste projeto, se tudo ocorreu bem, no seu ambiente do bigquery você deve ver um dataset chamado `raw_data` e no gcs (google cloud storage) um bucket chamado `dtc_data_lake`.
 
-![raw_data](imagens/Screenshot.png)
+Imagem do bucket no gcs
 
-FIXME: ADICIONAR TUTORIAL PARA CRIAR O BUCKET
+![bucket](imagens/gcs-print.png)
+
+Imagem do dataset no bigquery
+![raw_data](imagens/bigquery.png)
